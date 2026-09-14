@@ -9,7 +9,37 @@ export const getAppointments = async() => {
     return await response.json();
 }
 
-//APPOINTMENT TYPES
+//PSOT
+export const createAppointment = async(formData) =>{
+    const response = await fetch(`${API_URL}/appointments`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ appointment: formData }),
+    })
+    if (!response.ok) throw new Error('Error al crear la cita');
+    return await response.json();
+};
+
+//patch
+export const updateAppointment = async(id, formData) =>{
+    const response = await fetch(`${API_URL}/appointments/${id}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ appointment: formData }),
+    })
+    if (!response.ok) throw new Error('Error al actualizar la cita');
+    return await response.json();
+};
+
+//delete
+export const deleteAppointment = async (id) => {
+  const response = await fetch(`${API_URL}/appointments/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error('Error al eliminar cita');
+};
+
+////APPOINTMENT TYPES////
 
 //GET
 export const getAppointmentTypes = async () => {
