@@ -9,6 +9,7 @@ const initialFormState = {
     appointment_type_id: '',
     starts_at: '',
     ends_at: '',
+    location: '',
 }
 
 export const AppointmentsPage = () => {
@@ -190,6 +191,17 @@ export const AppointmentsPage = () => {
                 />
                 </div>
 
+                <div>
+                    <label style={{ display: 'block', marginBottom: '4px' }}>Ubicación:</label>
+                    <input
+                        type="text"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        style={{ width: '100%', padding: '8px' }}
+                    />
+                </div>
+
                 <div style={{ display: 'flex', gap: '10px' }}>
                 <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>
                     {editingID ? 'Guardar Cambios' : 'Agendar Cita'}
@@ -226,7 +238,8 @@ export const AppointmentsPage = () => {
                             Inicio: {new Date(item.starts_at).toLocaleString()} | Fin:{' '}
                             {new Date(item.ends_at).toLocaleString()}
                             </p>
-                            {item.notes && <p style={{ margin: '4px 0', italic: 'true' }}>"{item.notes}"</p>}
+                            {item.notes && <p style={{ margin: '4px 0', italic: 'true' }}>Notas: "{item.notes}"</p>}
+                            {item.location && <p style={{ margin: '4px 0', italic: 'true' }}>Ubicacion: "{item.location}"</p>}
                         </div>
 
                         <div style={{ display: 'flex', gap: '8px' }}>

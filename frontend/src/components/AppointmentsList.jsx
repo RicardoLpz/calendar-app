@@ -49,6 +49,7 @@ export const AppointmentsList = () => {
                             <h3>{app.description}</h3>
                             <p><strong>Fecha y Hora:</strong> {new Date(app.starts_at).toLocaleString()}</p>
                             {app.notes && <p><strong>Notas:</strong> {app.notes}</p>}
+                            {app.location && <p><strong>Ubicacion:</strong> {app.location}</p>}
                         </li>
                     ))}
                 </ul>
