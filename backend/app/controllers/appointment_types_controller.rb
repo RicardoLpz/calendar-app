@@ -35,7 +35,11 @@ class AppointmentTypesController < ApplicationController
 
   # DELETE /appointment_types/1
   def destroy
-    @appointment_type.destroy!
+    if @appointment_type.destroy
+      head :no_content
+    else
+      render json: { errors: @appointment_type.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
