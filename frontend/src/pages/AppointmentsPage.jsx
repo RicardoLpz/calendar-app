@@ -59,6 +59,9 @@ export const AppointmentsPage = () => {
         //format data fields
         const payload = {
             ...formData,
+            description: formData.description?.trim(),
+            location: formData.location?.trim() || '',
+            notes: formData.notes?.trim() || '',
             appointment_type_id: parseInt(formData.appointment_type_id, 10),
             starts_at: new Date(formData.starts_at).toISOString(),
             ends_at: new Date(formData.ends_at).toISOString(),
@@ -129,6 +132,7 @@ export const AppointmentsPage = () => {
                 <input
                     type="text"
                     name="description"
+                    maxLength={100}
                     value={formData.description}
                     onChange={handleChange}
                     style={{ width: '100%', padding: '8px' }}
@@ -184,6 +188,7 @@ export const AppointmentsPage = () => {
                 <label style={{ display: 'block', marginBottom: '4px' }}>Notas adicionales:</label>
                 <textarea
                     name="notes"
+                    maxLength={150}
                     value={formData.notes}
                     onChange={handleChange}
                     rows="3"
@@ -196,6 +201,7 @@ export const AppointmentsPage = () => {
                     <input
                         type="text"
                         name="location"
+                        maxLength={150}
                         value={formData.location}
                         onChange={handleChange}
                         style={{ width: '100%', padding: '8px' }}

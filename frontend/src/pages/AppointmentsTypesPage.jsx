@@ -91,6 +91,7 @@ export const AppointmentsTypesPage = () => {
                 <input
                 type="text"
                 placeholder="Nombre del tipo de cita"
+                maxLength={50}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 style={{ flex: 1, padding: '8px', fontSize: '14px' }}
