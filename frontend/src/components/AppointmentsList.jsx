@@ -1,10 +1,26 @@
 import { useEffect, useState } from "react";
 import { getAppointments } from "../services/api";
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography
+} from "@mui/material";
+
+import { useNavigate } from "react-router-dom";
 
 export const AppointmentsList = () => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchNearAppointments = async()=>{
@@ -30,30 +46,114 @@ export const AppointmentsList = () => {
     if(error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
     return(
-        <div className="appointments-container">
-            <h2>Próximas Citas</h2>
-            {appointments.length === 0 ? (
-                <p>No hay citas programadas</p>
-            ) : (
-                <ul className="appointments-list" style={{ listStyle: 'none', padding: 0 }}>
-                    {appointments.map((app) => (
-                        <li
-                            key={app.id}
-                            style={{
-                                border: '1px solid #ccc',
-                                borderRadius: '8px',
-                                padding: '12px',
-                                marginBottom: '10px',
-                            }}
+            <Paper
+                elevation={0}
+                sx={{
+                    border: "1px solid",
+                    borderColor: "divider",
+                    borderRadius: 2
+                }}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        p: 2
+                    }}
+                >
+                    <Box>
+                        <Typography variant="h6" fontWeight="bold">
+                            Próximas citas
+                        </Typography>
+
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
                         >
-                            <h3>{app.description}</h3>
-                            <p><strong>Fecha y Hora:</strong> {new Date(app.starts_at).toLocaleString()}</p>
-                            {app.notes && <p><strong>Notas:</strong> {app.notes}</p>}
-                            {app.location && <p><strong>Ubicacion:</strong> {app.location}</p>}
-                        </li>
-                    ))}
-                </ul>
-            )}            
-        </div>
+                            Citas próximas de tu agenda
+                        </Typography>
+                    </Box>
+                    <Button
+                        size="small"
+                        onClick={() => navigate("/citas")}
+                    >
+                        Ver todas
+                    </Button>
+                </Box>
+
+                <TableContainer>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    Descripcion
+                                </TableCell>
+                                <TableCell>
+                                    Tipo
+                                </TableCell>
+                                <TableCell>
+                                    Fecha inicio
+                                </TableCell>
+                                <TableCell>
+                                    Fecha fin
+                                </TableCell>
+                                <TableCell>
+                                    Notas
+                                </TableCell>
+                                <TableCell>
+                                    Ubicacion
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                            {appointments.length === 0 ? (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={5}
+                                        align="center"
+                                    >
+                                        <Typography
+                                            color="text.secondary"
+                                            sx={{ py: 3 }}
+                                        >
+                                            No hay próximas citas
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                appointments.map((appointment) => (
+                                    <TableRow
+                                        key={appointment.id}
+                                        hover
+                                    >
+                                        <TableCell>
+                                            {appointment.description}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography fontWeight="bold">
+                                                {appointment.appointment_type?.name || ""}
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(appointment.starts_at).toLocaleString()}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Date(appointment.ends_at).toLocaleString()}
+                                        </TableCell>
+                                        <TableCell>
+                                            {appointment.notes}
+                                        </TableCell>
+                                        <TableCell>
+                                            {appointment.location}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
     );
 };
