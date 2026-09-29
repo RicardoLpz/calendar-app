@@ -49,22 +49,22 @@ export const getAppointmentTypes = async () => {
 };
 
 //POST
-export const createAppointmentType = async(name) =>{
+export const createAppointmentType = async(data) =>{
     const response = await fetch(`${API_URL}/appointment_types`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ appointment_type: {name} }),
+        body: JSON.stringify({ appointment_type: data }),
     })
     if (!response.ok) throw new Error('Error al crear el tipo de cita');
     return await response.json();
 };
 
 //patch
-export const updateAppointmentType = async(id, name) =>{
+export const updateAppointmentType = async(id, data) =>{
     const response = await fetch(`${API_URL}/appointment_types/${id}`, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ appointment_type: {name} }),
+        body: JSON.stringify({ appointment_type: data }),
     })
     if (!response.ok) throw new Error('Error al actualizar el tipo de cita');
     return await response.json();
@@ -75,5 +75,10 @@ export const deleteAppointmentType = async (id) => {
   const response = await fetch(`${API_URL}/appointment_types/${id}`, {
     method: 'DELETE',
   });
-  if (!response.ok) throw new Error('Error al eliminar tipos de cita');
+  if (!response.ok) {
+    const data = await response.json();
+    console.log("DELETE ERROR:", data);
+    const message = data?.errors || 'Error al intentar eliminar tipo de cita' 
+    throw new Error(message);
+  }
 };
