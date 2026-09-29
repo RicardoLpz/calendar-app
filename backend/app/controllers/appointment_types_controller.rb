@@ -38,7 +38,7 @@ class AppointmentTypesController < ApplicationController
     if @appointment_type.destroy
       head :no_content
     else
-      render json: { errors: @appointment_type.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: 'No se puede eliminar el tipo de cita porque tiene citas ya creadas' }, status: :unprocessable_entity
     end
   end
 
