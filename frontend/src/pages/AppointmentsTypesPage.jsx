@@ -2,22 +2,32 @@ import { useEffect, useState } from "react";
 import { getAppointmentTypes, createAppointmentType,
         updateAppointmentType, deleteAppointmentType
  } from "../services/api";
+import {
+    Box,
+    Button,
+    Paper,
+    TextField,
+    Typography
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+
+import { AppointmentTypeTable } from "../components/appointmentTypes/AppointmentTypeTable";
+import { AppointmentTypeModal } from "../components/appointmentTypes/AppointmentTypeModal"; 
 
 export const AppointmentsTypesPage = () => {
-    const [types, setTypes] = useState([]);
-    const [name, setName] = useState('');
-    const [editingID, seteditingID] = useState(null);
+    const [appointmentTypes, setAppointmentTypes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [search, setSearch] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedAppointmentType, setSelectedAppointmentType] = useState(null);
 
     //load existing data
     const loadTypes = async () => {
         try{
             const data = await getAppointmentTypes();
-            setTypes(data);
-            setError(null);
-        }catch(err){
-            setError(err.message);
+            setAppointmentTypes(data);
+        }catch(error){
+            console.error(error);
         }finally{
             setLoading(false);
         }
@@ -26,115 +36,116 @@ export const AppointmentsTypesPage = () => {
         loadTypes();
     }, []);
 
-    //create or edit
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if(!name.trim()) return;
+    const handleCreate = () => {
+        setSelectedAppointmentType(null);
+        setModalOpen(true);
+    };
 
-        try{
-            if(editingID){
-                await updateAppointmentType(editingID, name);
-            }else{
-                await createAppointmentType(name);
-            }
-            setName('');
-            seteditingID(null);
-            await loadTypes();
-        }catch(err){
-            alert(err.message);
+
+    const handleEdit = (appointmentType) => {
+        setSelectedAppointmentType(appointmentType);
+        setModalOpen(true);
+    };
+
+
+    const handleDelete = async (id) => {
+        if (!window.confirm(
+            "¿Seguro que quieres eliminar este tipo de cita?"
+        )) {
+            return;
         }
-    };
 
-    //load data for editing
-    const handleEdit = (type) => {
-        seteditingID(type.id);
-        setName(type.name);
-    }
-
-    //cancel edition
-    const handleCancelEdit = () => {
-        seteditingID(null);
-        setName('');
-    };
-
-    //delete
-    const handleDelete = async (id) =>{
-        if(!window.confirm('¿Seguro que quieres eliminar?')) return;
-
-        try{
+        try {
             await deleteAppointmentType(id);
             await loadTypes();
-        }catch(err){
-            alert(err.message);
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
         }
     };
 
-    if (loading) return <p>Cargando datos...</p>;
+    const handleSubmit = async (formData) => {
+        try {
+            if (selectedAppointmentType) {
+                await updateAppointmentType(
+                    selectedAppointmentType.id,
+                    formData
+                );
+            } else {
+                await createAppointmentType(formData);
+            }
+            setModalOpen(false);
+            await loadTypes();
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        }
+    };
 
-    return(
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-            <h2>Gestión de Tipos de Cita</h2>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+    const filteredTypes = appointmentTypes.filter((type) =>
+        type.name
+            .toLowerCase()
+            .includes(search.toLowerCase())
+    );
 
-            <form
-                onSubmit={handleSubmit}
-                style={{
-                display: 'flex',
-                gap: '10px',
-                marginBottom: '20px',
-                background: '#f9f9f9',
-                padding: '15px',
-                borderRadius: '8px',
+    return (
+        <Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 3
                 }}
             >
-                <input
-                type="text"
-                placeholder="Nombre del tipo de cita"
-                maxLength={50}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{ flex: 1, padding: '8px', fontSize: '14px' }}
-                required
-                />
-                <button type="submit" style={{ padding: '8px 16px', cursor: 'pointer' }}>
-                {editingID ? 'Guardar Cambios' : 'Crear'}
-                </button>
-                {editingID && (
-                <button type="button" onClick={handleCancelEdit} style={{ padding: '8px 16px' }}>
-                    Cancelar
-                </button>
-                )}
-            </form>
-
-            <ul style={{ listStyle: 'none', padding: 0 }}>
-                {types.length === 0 ? (
-                <p>No hay tipos existentes</p>
-                ) : (
-                types.map((type) => (
-                    <li
-                        key={type.id}
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            padding: '12px',
-                            marginBottom: '8px',
-                            border: '1px solid #ddd',
-                            borderRadius: '6px',
-                        }}
+                <Box>
+                    <Typography variant="h5">
+                        Tipos de citas
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
                     >
-                    <span><strong>ID {type.id}:</strong> {type.name}</span>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                        <button onClick={() => handleEdit(type)}>Editar</button>
-                        <button onClick={() => handleDelete(type.id)} style={{ color: 'red' }}>
-                            Eliminar
-                        </button>
-                    </div>
-                    </li>
-                ))
-                )}
-            </ul>
-        </div>
-    )
+                        Administra los tipos de citas disponibles
+                    </Typography>
+                </Box>
+                <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={handleCreate}
+                >
+                    Nuevo tipo
+                </Button>
+            </Box>
+            <Paper
+                sx={{
+                    p: 2,
+                    mb: 2
+                }}
+            >
+                <TextField
+                    fullWidth
+                    size="small"
+                    label="Buscar tipo de cita"
+                    value={search}
+                    onChange={(event) =>
+                        setSearch(event.target.value)
+                    }
+                />
+            </Paper>
+            <AppointmentTypeTable
+                appointmentTypes={filteredTypes}
+                loading={loading}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
+            <AppointmentTypeModal
+                open={modalOpen}
+                appointmentType={selectedAppointmentType}
+                onClose={() => setModalOpen(false)}
+                onSubmit={handleSubmit}
+            />
+        </Box>
+    );
 }
