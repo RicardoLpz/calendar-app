@@ -40,9 +40,8 @@ export const AppointmentsPage = () => {
             const appsData = await getAppointments();
             setTypes(typesData);
             setAppointments(appsData);
-            setError(null);
-        }catch(err){
-            setError(err.message);
+        }catch(error){
+            console.error(error)
         }finally{
             setLoading(false);
         }
