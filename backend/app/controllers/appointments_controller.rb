@@ -3,9 +3,13 @@ class AppointmentsController < ApplicationController
 
   # GET /appointments
   def index
-    @appointments = Appointment.all
+    @appointments = Appointment.includes(:appointment_type).all
 
-    render json: @appointments
+    render json: @appointments.as_json(
+      include: {
+        appointment_type: { only: [:id, :name] }
+      }
+    )
   end
 
   # GET /appointments/1
