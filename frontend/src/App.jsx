@@ -4,6 +4,7 @@ import { Home } from "./pages/Home";
 import { AppointmentsPage } from './pages/AppointmentsPage';
 import { AppointmentsTypesPage } from './pages/AppointmentsTypesPage';
 import { Layout } from './components/layout/Layout';
+import { Calendar } from './pages/Calendar';
 
 const theme = createTheme({
   palette: {
@@ -32,7 +33,7 @@ function App() {
                     />
                     <Route
                         path="/calendario"
-                        element={""}
+                        element={<Calendar />}
                     />
                     <Route
                         path="/tipos-citas"

@@ -9,7 +9,7 @@ export const Home = () => {
     }, []);
 
     return (
-        <main style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+        <main>
             <h1>Bienvenido a la Agenda</h1>
             <hr style={{ margin: '20px 0' }}/>
             <AppointmentsList/>
