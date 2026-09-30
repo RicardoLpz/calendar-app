@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+import { AppointmentChip } from "./appointments/AppointmentChip";
 
 export const AppointmentsList = () => {
     const [appointments, setAppointments] = useState([]);
@@ -132,9 +133,9 @@ export const AppointmentsList = () => {
                                             {appointment.description}
                                         </TableCell>
                                         <TableCell>
-                                            <Typography fontWeight="bold">
-                                                {appointment.appointment_type?.name || ""}
-                                            </Typography>
+                                            <AppointmentChip
+                                                appointmentType={appointment.appointment_type}
+                                            />
                                         </TableCell>
                                         <TableCell>
                                             {new Date(appointment.starts_at).toLocaleString()}

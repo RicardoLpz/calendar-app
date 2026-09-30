@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { getAppointments } from "../services/api";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AppointmentChip } from "../components/appointments/AppointmentChip";
 
 
 export const Calendar = () => {
@@ -167,8 +168,6 @@ export const Calendar = () => {
                                                     fontWeight="bold"
                                                 >
                                                     { appointment.description }
-                                                    {" - "}
-                                                    { appointment.appointment_type?.name }
                                                 </Typography>
                                                 <Typography
                                                     variant="body2"
@@ -179,10 +178,8 @@ export const Calendar = () => {
                                                     {dayjs(appointment.ends_at).format("hh:mm A")}
                                                 </Typography>
                                             </Box>
-                                            <Chip
-                                                label="Agendada"
-                                                color="success"
-                                                size="small"
+                                            <AppointmentChip 
+                                                appointmentType={appointment.appointment_type}
                                             />
                                         </Box>
                                     </Paper>

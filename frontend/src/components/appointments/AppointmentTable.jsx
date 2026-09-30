@@ -14,6 +14,7 @@ import {
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { AppointmentChip } from "./AppointmentChip";
 
 
 export const AppointmentTable = ({
@@ -56,7 +57,7 @@ export const AppointmentTable = ({
                             Tipo
                         </TableCell>
                         <TableCell>
-                            FEcha inicio
+                            Fecha inicio
                         </TableCell>
                         <TableCell>
                             Fecha fin
@@ -99,7 +100,9 @@ export const AppointmentTable = ({
                                     {appointment.description}
                                 </TableCell>
                                 <TableCell>
-                                    {appointment.appointment_type?.name || ""}
+                                    <AppointmentChip 
+                                        appointmentType={appointment.appointment_type}
+                                    />
                                 </TableCell>
                                 <TableCell>
                                     {new Date(appointment.starts_at).toLocaleString()}

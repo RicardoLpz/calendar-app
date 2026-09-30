@@ -9,12 +9,12 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
+    Typography,
+    Chip
 } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 
 export const AppointmentTypeTable = ({
     appointmentTypes,
@@ -33,6 +33,9 @@ export const AppointmentTypeTable = ({
                         </TableCell>
                         <TableCell>
                             Nombre
+                        </TableCell>
+                        <TableCell>
+                            Color
                         </TableCell>
                         <TableCell align="right">
                             Acciones
@@ -75,6 +78,14 @@ export const AppointmentTypeTable = ({
                                 </TableCell>
                                 <TableCell>
                                     {type.name}
+                                </TableCell>
+                                <TableCell>
+                                    <Chip
+                                        sx={{
+                                            backgroundColor: type.color
+                                        }}
+                                    />
+
                                 </TableCell>
                                 <TableCell align="right">
                                     <IconButton
