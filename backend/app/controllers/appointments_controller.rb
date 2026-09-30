@@ -7,7 +7,7 @@ class AppointmentsController < ApplicationController
 
     render json: @appointments.as_json(
       include: {
-        appointment_type: { only: [:id, :name] }
+        appointment_type: { only: [:id, :name, :color] }
       }
     )
   end
