@@ -10,6 +10,7 @@ import {
     TableRow,
     Typography,
     Box,
+    Chip
 } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -68,6 +69,9 @@ export const AppointmentTable = ({
                         <TableCell>
                             Ubicacion
                         </TableCell>
+                        <TableCell>
+                            Interesados
+                        </TableCell>
                         <TableCell align="right">
                             Acciones
                         </TableCell>
@@ -115,6 +119,19 @@ export const AppointmentTable = ({
                                 </TableCell>
                                 <TableCell>
                                     {appointment.location}
+                                </TableCell>
+                                <TableCell
+                                    sx={{
+                                        maxWidth: 200
+                                    }}
+                                >
+                                    {appointment.atendee?.map((atendee, id) => (
+                                        <Chip 
+                                            key={id}
+                                            label={atendee}
+                                            size="small"
+                                        />
+                                    ))}
                                 </TableCell>
                                 <TableCell align="right">
                                     <IconButton

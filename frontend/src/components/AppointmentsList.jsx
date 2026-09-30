@@ -10,7 +10,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
+    Typography,
+    Chip
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
@@ -105,6 +106,9 @@ export const AppointmentsList = () => {
                                 <TableCell>
                                     Ubicacion
                                 </TableCell>
+                                <TableCell>
+                                    Interesados
+                                </TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -148,6 +152,19 @@ export const AppointmentsList = () => {
                                         </TableCell>
                                         <TableCell>
                                             {appointment.location}
+                                        </TableCell>
+                                        <TableCell
+                                            sx={{
+                                                maxWidth: 200
+                                            }}
+                                        >
+                                            {appointment.atendee?.map((atendee, id) => (
+                                                <Chip 
+                                                    key={id}
+                                                    label={atendee}
+                                                    size="small"
+                                                />
+                                            ))}
                                         </TableCell>
                                     </TableRow>
                                 ))
