@@ -5,7 +5,8 @@ import {
     DialogContent,
     DialogTitle,
     MenuItem,
-    TextField
+    TextField,
+    Autocomplete
 } from "@mui/material";
 
 import { useEffect, useState } from "react";
@@ -29,7 +30,8 @@ export const AppointmentModal = ({
         starts_at: "",
         ends_at: "",
         notes: "",
-        location: ""
+        location: "",
+        atendee: []
     });
 
     useEffect(() => {
@@ -41,6 +43,7 @@ export const AppointmentModal = ({
                 ends_at: appointment.ends_at || "",
                 notes: appointment.notes || "",
                 location: appointment.location || "",
+                atendee: appointment.atendee || []
             });
         } else {
             setFormValues({
@@ -49,7 +52,8 @@ export const AppointmentModal = ({
                 starts_at: "",
                 ends_at: "",
                 notes: "",
-                location:""
+                location:"",
+                atendee: []
             });
         }
 
@@ -176,7 +180,35 @@ export const AppointmentModal = ({
                         value={formValues.location}
                         onChange={handleChange}
                     />
-                   
+                    <Autocomplete
+                        multiple
+                        freeSolo
+                        options={[]}
+                        value={formValues.atendee}
+                        onChange={(event, newValue) => {
+                            setFormValues((previous) => ({
+                                ...previous,
+                                atendee: newValue
+                            }));
+                        }}
+                        renderTags={(value, getTagProps) =>
+                            value.map((name, index) => (
+                                <Chip
+                                    label={name}
+                                    {...getTagProps({ index })}
+                                    key={index}
+                                />
+                            ))
+                        }
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Personas interesadas"
+                                placeholder="Escribe un nombre y dale Enter"
+                                margin="normal"
+                            />
+                        )}
+                    />
                 </DialogContent>
                 <DialogActions sx={{ p: 2 }}>
                     <Button
