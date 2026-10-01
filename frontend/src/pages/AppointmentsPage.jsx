@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getAppointments, 
         createAppointment,
         updateAppointment, 
@@ -26,10 +27,12 @@ const initialFormState = {
 
 export const AppointmentsPage = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const [appointments, setAppointments] = useState([]);
     const [types, setTypes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState(searchParams.get("search") || "");
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
 

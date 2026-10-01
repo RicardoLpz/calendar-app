@@ -9,11 +9,10 @@ import { Drawer,
     Box
 } from "@mui/material";
 
-import { Dashboard as DashboardIcon,
-    Event as EventIcon,
-    CalendarMonth as CalendarIcon,
-    Category as CategoryIcon
-} from "@mui/icons-material";
+import HomeIcon from '@mui/icons-material/Home';
+import EventIcon from "@mui/icons-material/Event";
+import CalendarIcon from "@mui/icons-material/CalendarMonth";
+import HiveIcon from '@mui/icons-material/Hive';
 
 import { NavLink } from "react-router-dom";
 
@@ -23,7 +22,7 @@ const menuItems = [
     {
         text: "Inicio",
         path: "/",
-        icon: <DashboardIcon />
+        icon: <HomeIcon />
     },
     {
         text: "Citas",
@@ -38,7 +37,7 @@ const menuItems = [
     {
         text: "Tipos de citas",
         path: "/tipos-citas",
-        icon: <CategoryIcon />
+        icon: <HiveIcon />
     }
 ];
 

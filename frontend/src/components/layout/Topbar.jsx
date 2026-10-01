@@ -1,10 +1,11 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     AppBar,
     Toolbar,
     Typography,
     Box,
     InputBase,
-    Avatar
 } from "@mui/material";
 
 import {
@@ -12,6 +13,18 @@ import {
 } from "@mui/icons-material";
 
 export const Topbar = () => {
+    const [search, setSearch] = useState("");
+    const navigate = useNavigate();
+
+    const handleSearch = (event) => {
+        if (event.key !== "Enter") return;
+        const value = search.trim();
+        if (!value) return;
+        navigate(
+            `/citas?search=${encodeURIComponent(value)}`
+        );
+        setSearch("");
+    };
     return (
         <AppBar
             position="fixed"
@@ -48,6 +61,11 @@ export const Topbar = () => {
                     <SearchIcon />
                     <InputBase
                         placeholder="Buscar..."
+                        value={search}
+                        onChange={(event) =>
+                            setSearch(event.target.value)
+                        }
+                        onKeyDown={handleSearch}
                         sx={{
                             ml: 1,
                             flex: 1,

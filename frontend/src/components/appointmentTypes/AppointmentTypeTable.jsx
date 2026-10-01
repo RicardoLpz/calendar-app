@@ -10,7 +10,7 @@ import {
     TableHead,
     TableRow,
     Typography,
-    Chip
+    Tooltip
 } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -80,12 +80,19 @@ export const AppointmentTypeTable = ({
                                     {type.name}
                                 </TableCell>
                                 <TableCell>
-                                    <Chip
-                                        sx={{
-                                            backgroundColor: type.color
-                                        }}
-                                    />
-
+                                    <Tooltip title={type.color}>
+                                        <Box
+                                            sx={{
+                                                width: 24,
+                                                height: 24,
+                                                borderRadius: "50%",
+                                                backgroundColor: type.color,
+                                                border: "1px solid",
+                                                borderColor: "divider",
+                                                cursor: "default"
+                                            }}
+                                        />
+                                    </Tooltip>
                                 </TableCell>
                                 <TableCell align="right">
                                     <IconButton
