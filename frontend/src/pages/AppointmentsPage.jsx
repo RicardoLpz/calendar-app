@@ -157,7 +157,7 @@ export const AppointmentsPage = () => {
                     size="small"
                     fullWidth
                     label="Buscar"
-                    placeholder="Descripcion.."
+                    placeholder="Descripcion o notas..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />

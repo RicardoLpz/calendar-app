@@ -9,15 +9,17 @@ import {
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { PickerDay } from "@mui/x-date-pickers/PickerDay";
 import dayjs from "dayjs";
-import { getAppointments } from "../services/api";
+import { getAppointments, getAppointmentTypes } from "../services/api";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AppointmentChip } from "../components/appointments/AppointmentChip";
+import { TypesIndex } from "../components/appointmentTypes/TypesIndex";
 
 
 export const Calendar = () => {
     const [appointments, setAppointments] = useState([]);
     const [selectedDate, setSelectedDate] = useState(dayjs());
+    const [appointmentTypes, setAppointmentTypes] = useState([]);
 
     const loadAppointments = async () => {
         try {
@@ -28,8 +30,18 @@ export const Calendar = () => {
         }
     };
 
+    const loadAppointmentTypes = async () => {
+        try{
+            const data = await getAppointmentTypes();
+            setAppointmentTypes(data);
+        }catch(error){
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
         loadAppointments();
+        loadAppointmentTypes();
     }, []);
 
     const appointmentDates = useMemo(() => {
@@ -96,6 +108,13 @@ export const Calendar = () => {
                 >
                     Consulta las citas programadas
                 </Typography>
+               
+            </Box>
+            <Box sx={{ mb: 3 }}>
+                <TypesIndex
+                    appointmentTypes={appointmentTypes} 
+                    appointments={appointments}
+                />
             </Box>
             <Box
                 sx={{
@@ -125,7 +144,6 @@ export const Calendar = () => {
                     />
                     </LocalizationProvider>
                 </Paper>
-
                 <Paper
                     sx={{
                         p: 3,
