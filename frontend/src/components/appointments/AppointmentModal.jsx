@@ -6,7 +6,8 @@ import {
     DialogTitle,
     MenuItem,
     TextField,
-    Autocomplete
+    Autocomplete,
+    Chip
 } from "@mui/material";
 
 import { useEffect, useState } from "react";
@@ -96,6 +97,11 @@ export const AppointmentModal = ({
                         value={formValues.description}
                         onChange={handleChange}
                         required
+                        slotProps={{
+                            htmlInput: {
+                                maxLength: 50
+                            }
+                        }}
                     />
                     <TextField
                         fullWidth
@@ -147,6 +153,11 @@ export const AppointmentModal = ({
                                     ? dayjs(formValues.ends_at)
                                     : null
                             }
+                            minDateTime={
+                                formValues.starts_at
+                                    ? dayjs(formValues.starts_at)
+                                    : undefined
+                            }
                             onChange={(value) => {
                                 setFormValues((previous) => ({
                                     ...previous,
@@ -171,6 +182,11 @@ export const AppointmentModal = ({
                         name="notes"
                         value={formValues.notes}
                         onChange={handleChange}
+                        slotProps={{
+                            htmlInput: {
+                                maxLength: 200
+                            }
+                        }}
                     />
                     <TextField
                         fullWidth
@@ -179,6 +195,11 @@ export const AppointmentModal = ({
                         name="location"
                         value={formValues.location}
                         onChange={handleChange}
+                        slotProps={{
+                            htmlInput: {
+                                maxLength: 150
+                            }
+                        }}
                     />
                     <Autocomplete
                         multiple
@@ -186,16 +207,20 @@ export const AppointmentModal = ({
                         options={[]}
                         value={formValues.atendee}
                         onChange={(event, newValue) => {
+                            const sanitize = newValue
+                            .map((name) => name.trim())
+                            .filter((name) => name.length <=40);
+
                             setFormValues((previous) => ({
                                 ...previous,
-                                atendee: newValue
+                                atendee: sanitize
                             }));
                         }}
-                        renderTags={(value, getTagProps) =>
+                        renderValue={(value, getItemProps) =>
                             value.map((name, index) => (
                                 <Chip
                                     label={name}
-                                    {...getTagProps({ index })}
+                                    {...getItemProps({ index })}
                                     key={index}
                                 />
                             ))

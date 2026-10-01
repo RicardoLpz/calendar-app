@@ -78,6 +78,11 @@ export const AppointmentTypeModal = ({
                         onChange={handleChange}
                         required
                         autoFocus
+                        slotProps={{
+                            htmlInput: {
+                                maxLength: 40
+                            }
+                        }}
                     />
                     <Box
                         sx={{
